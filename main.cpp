@@ -121,7 +121,6 @@ void modify(State& state) {
         return;
     }
     while (true) {
-        int diff = 0;
         vector<int> move;
         rep(i, 4) {
             int nx = x + dx[i], ny = y + dy[i];
