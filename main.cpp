@@ -55,7 +55,7 @@ struct Timer {
 struct State {
     vector<pair<int, int>> xy;
     vector<int> canMove;
-    bool visited[2500];
+    vector<bool> visited;
     int score;
 };
 
@@ -67,10 +67,10 @@ void init(State& bestState) {
     while (true) {
         if (steps % 10000 == 0) {
             nowclock = tmr.getTime();
-            if (nowclock - startclock > 0.2) break;
+            if (nowclock - startclock > 0.1) break;
         }
         State state;
-        fill(state.visited, state.visited + M, false);
+        state.visited.resize(M);
         state.visited[t[si][sj]] = true;
         state.score = p[si][sj];
         int x = si, y = sj;
@@ -103,12 +103,14 @@ void init(State& bestState) {
     cerr << "steps : " << steps << endl;
 }
 
+int D;
+
 void modify(State& state) {
     int x, y;
     while (not state.xy.empty()) {
         x = state.xy.back().first;
         y = state.xy.back().second;
-        if (state.canMove.back() > 1 and rnd.rand() % 30 == 0) {
+        if (state.canMove.back() > 1 and rnd.rand() % D == 0) {
             state.canMove.pop_back();
             break;
         }
@@ -153,14 +155,9 @@ void solve(State& state) {
             temp = starttemp +
                    (endtemp - starttemp) * (nowclock - startclock) / TIMELIMIT;
             state = bestState;
+            D = (double)(1.2 - (nowclock - startclock) / TIMELIMIT) * 30.0;
         }
-        State newstate;
-        newstate.xy = state.xy;
-        newstate.canMove = state.canMove;
-        rep(i, M) {
-            newstate.visited[i] = state.visited[i];
-        }
-        newstate.score = state.score;
+        State newstate = state;
         modify(newstate);
         /*
         if (newstate.score > state.score) {
