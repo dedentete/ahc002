@@ -99,8 +99,6 @@ void init(State& bestState) {
         }
         steps++;
     }
-    cerr << "score : " << bestState.score << endl;
-    cerr << "steps : " << steps << endl;
 }
 
 int D;
@@ -174,8 +172,6 @@ void solve(State& state) {
         steps++;
     }
     state = bestState;
-    cerr << "score : " << state.score << endl;
-    cerr << "steps : " << steps << endl;
 }
 
 void input() {
@@ -207,6 +203,7 @@ void output(State& state) {
             cout << "R";
         }
     }
+    cout << endl;
 }
 
 signed main() {
